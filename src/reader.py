@@ -5,6 +5,7 @@
 
 import codecs
 import simplejson
+import datetime
 from model.model_copy import characters, table
 
 table = table
@@ -24,6 +25,12 @@ def process_line(line):
             table[id_cur][id_next] = cur_count + 1
 
 
+def get_now_str():
+    now = datetime.datetime.now()
+    now_str = str(now).replace("-", "_").replace(" ", "_").replace(":", "_").replace(".", "_")
+    return now_str
+
+
 def reader(file_path):
     global table
     text_file = codecs.open(file_path, "r", "gb2312")
@@ -36,7 +43,7 @@ def reader(file_path):
     for key, value in table.items():
         if value == {}:
             table.pop(key)
-    file_result = open("./result.json", "w")
+    file_result = open("./" + get_now_str() + "_result.json", "w")
     simplejson.dump(table, file_result)
     file_result.close()
 
